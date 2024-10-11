@@ -1,0 +1,2768 @@
+# The proguard configuration file for the following section is C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\build\intermediates\default_proguard_files\global\proguard-android-optimize.txt-7.4.2
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+#
+# Starting with version 2.2 of the Android plugin for Gradle, this file is distributed together with
+# the plugin and unpacked at build-time. The files in $ANDROID_HOME are no longer maintained and
+# will be ignored by new version of the Android plugin for Gradle.
+
+# Optimizations: If you don't want to optimize, use the proguard-android.txt configuration file
+# instead of this one, which turns off the optimization flags.
+# Adding optimization introduces certain risks, since for example not all optimizations performed by
+# ProGuard works on all versions of Dalvik.  The following flags turn off various optimizations
+# known to have issues, but the list may not be complete or up to date. (The "arithmetic"
+# optimization can be used if you are only targeting Android 2.0 or later.)  Make sure you test
+# thoroughly if you go this route.
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizationpasses 5
+-allowaccessmodification
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# Preserve some attributes that may be required for reflection.
+-keepattributes AnnotationDefault,
+                EnclosingMethod,
+                InnerClasses,
+                RuntimeVisibleAnnotations,
+                RuntimeVisibleParameterAnnotations,
+                RuntimeVisibleTypeAnnotations,
+                Signature
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+-keep public class com.google.android.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.google.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}
+
+# Keep setters in Views so that animations can still work.
+-keepclassmembers public class * extends android.view.View {
+    void set*(***);
+    *** get*();
+}
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick.
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+# Preserve annotated Javascript interface methods.
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# The support libraries contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version. We know about them, and they are safe.
+-dontnote android.support.**
+-dontnote androidx.**
+-dontwarn android.support.**
+-dontwarn androidx.**
+
+# This class is deprecated, but remains for backward compatibility.
+-dontwarn android.util.FloatMath
+
+# Understand the @Keep support annotation.
+-keep class android.support.annotation.Keep
+-keep class androidx.annotation.Keep
+
+-keep @android.support.annotation.Keep class * {*;}
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+# These classes are duplicated between android.jar and org.apache.http.legacy.jar.
+-dontnote org.apache.http.**
+-dontnote android.net.http.**
+
+# These classes are duplicated between android.jar and core-lambda-stubs.jar.
+-dontnote java.lang.invoke.**
+
+# End of content from C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\build\intermediates\default_proguard_files\global\proguard-android-optimize.txt-7.4.2
+# The proguard configuration file for the following section is C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\proguard-rules.pro
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in C:\Users\Xiao\AppData\Local\Android\Sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+
+################################################################################
+#                               support design                                 #
+################################################################################
+#@link http://stackoverflow.com/a/31028536
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+#end support design
+
+################################################################################
+#                             com.google.vending                               #
+################################################################################
+#error : Note: the configuration refers to the unknown class 'com.google.vending.licensing.ILicensingService'
+#solution : @link http://stackoverflow.com/a/14463528
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote **ILicensingService
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+#end com.google.vending
+
+################################################################################
+#                                    admob                                     #
+################################################################################
+-keep public class com.google.android.gms.ads.** {
+    public *;
+}
+-keep public class com.google.ads.** {
+    public *;
+}
+-keep class com.google.android.gms.internal.** { *; }
+-keep class com.google.ads.mediation.admob.AdMobAdapter { *; }
+-keep class com.google.ads.mediation.AbstractAdViewAdapter { *; }
+-keep class com.google.ads.mediation.AdUrlAdapter { *; }
+#end admob
+
+################################################################################
+#                               remove log code                                #
+################################################################################
+-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...);
+    public static int i(...);
+    public static int w(...);
+    public static int d(...);
+    public static int e(...);
+}
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+}
+-assumenosideeffects class android.util.Log {
+    public static *** e(...);
+    public static *** v(...);
+}
+-assumenosideeffects class android.util.Log {
+    public static *** i(...);
+    public static *** v(...);
+}
+-assumenosideeffects class android.util.Log {
+    public static *** w(...);
+    public static *** v(...);
+}
+#end remove log code
+
+################################################################################
+#                            remove SDKLogUtil code                            #
+################################################################################
+-assumenosideeffects class com.yes.app.lib.util.SDKLogUtil {
+    public static int v(...);
+    public static int i(...);
+    public static int w(...);
+    public static int d(...);
+    public static int e(...);
+}
+-assumenosideeffects class com.yes.app.lib.util.SDKLogUtil {
+    public static *** d(...);
+    public static *** v(...);
+}
+-assumenosideeffects class com.yes.app.lib.util.SDKLogUtil {
+    public static *** e(...);
+    public static *** v(...);
+}
+-assumenosideeffects class com.yes.app.lib.util.SDKLogUtil {
+    public static *** i(...);
+    public static *** v(...);
+}
+-assumenosideeffects class com.yes.app.lib.util.SDKLogUtil {
+    public static *** w(...);
+    public static *** v(...);
+}
+#end remove SDKLogUtil code
+
+
+################################################################################
+#                                  GreenRobot                                  #
+################################################################################
+-dontwarn de.greenrobot.event.util.**
+#end GreenRobot
+
+#begin greendao
+################################################################################
+#                                  greenDAO 3                                  #
+################################################################################
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+# If you do not use SQLCipher:
+-dontwarn org.greenrobot.greendao.database.**
+# If you do not use RxJava:
+-dontwarn rx.**
+### greenDAO 2
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+#end greenDAO 3
+
+#begin GreenDaoUpgradeHelper
+################################################################################
+#                            GreenDaoUpgradeHelper                             #
+################################################################################
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+    public static void dropTable(org.greenrobot.greendao.database.Database, boolean);
+    public static void createTable(org.greenrobot.greendao.database.Database, boolean);
+}
+#end GreenDaoUpgradeHelper
+
+################################################################################
+#                                     Gson                                     #
+################################################################################
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+#end Gson
+
+################################################################################
+#                                  BUTTERKNIFE                                 #
+################################################################################
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+#end BUTTERKNIFE
+
+################################################################################
+#                                    Glide                                     #
+################################################################################
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
+#end Glide
+
+################################################################################
+#                                    OkHttp                                    #
+################################################################################
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+#end OkHttp
+
+################################################################################
+#                     not sure##by Eason FOR okHttp Glide                      #
+################################################################################
+-dontwarn com.bumptech.glide.load.model.stream.StreamModelLoader
+-dontwarn com.bumptech.glide.load.model.GenericLoaderFactory
+-dontwarn com.bumptech.glide.load.model.stream.StreamModelLoader
+-dontwarn com.bumptech.glide.load.model.ModelLoaderFactory
+-keep class com.bumptech.glide.load.model.ModelLoaderFactory
+-dontwarn com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader { *; }
+#end not sure##by Eason FOR okHttp Glide
+
+################################################################################
+#                                    Parcel                                    #
+################################################################################
+-keep class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    public <fields>;
+    private <fields>;
+}
+#end Parcel
+
+################################################################################
+#                                   Eventbus                                   #
+################################################################################
+#begin eventbus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+#end Eventbus
+
+################################################################################
+#                                  fastetxml                                   #
+################################################################################
+# Jackson
+-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonCreator class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonValue class * { *; }
+-keep class com.fasterxml.** { *; }
+-keep class org.codehaus.** { *; }
+-keep interface org.codehaus.jackson.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
+    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
+}
+# General
+-keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+#�Լ����
+-dontwarn okio.**
+-dontwarn org.w3c.dom.**
+#end fastetxml
+
+################################################################################
+#                          com.yanzhenjie:permission                           #
+################################################################################
+-dontwarn com.yanzhenjie.permission.**
+#end com.yanzhenjie:permission
+
+################################################################################
+#                                    Pangle                                    #
+################################################################################
+-keep class com.bytedance.sdk.** { *; }
+#end Pangle
+
+
+
+################################################################################
+#                                    Other                                    #
+################################################################################
+#指定压缩级别
+-optimizationpasses 6
+# 是否混淆非公共的库的类
+-dontskipnonpubliclibraryclasses
+#不跳过非公共的库的类成员
+-dontskipnonpubliclibraryclassmembers
+
+#混淆时所采用的算法(谷歌推荐算法)
+-optimizations !code/simplification/arithmetic,!field/,!class/merging/,!code/allocation/variable
+
+#把混淆类中的方法名也混淆了
+-useuniqueclassmembernames
+
+#优化时允许访问并修改有修饰符的类和类的成员
+-allowaccessmodification
+
+#将文件来源重命名为“SourceFile”字符串
+-renamesourcefileattribute SourceFile
+#保留行号
+-keepattributes SourceFile,LineNumberTable
+#end Other
+# End of content from C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\proguard-rules.pro
+# The proguard configuration file for the following section is C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\build\intermediates\aapt_proguard_file\devRelease\aapt_rules.txt
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+-keep class androidx.profileinstaller.ProfileInstallReceiver { <init>(); }
+-keep class androidx.room.MultiInstanceInvalidationService { <init>(); }
+-keep class androidx.startup.InitializationProvider { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.RescheduleReceiver { <init>(); }
+-keep class androidx.work.impl.background.systemalarm.SystemAlarmService { <init>(); }
+-keep class androidx.work.impl.background.systemjob.SystemJobService { <init>(); }
+-keep class androidx.work.impl.diagnostics.DiagnosticsReceiver { <init>(); }
+-keep class androidx.work.impl.foreground.SystemForegroundService { <init>(); }
+-keep class androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver { <init>(); }
+-keep class com.admob.test.MyApp { <init>(); }
+-keep class com.admob.test.ui.MainActivity { <init>(); }
+-keep class com.admob.test.ui.normal.NormalAdListActivity { <init>(); }
+-keep class com.admob.test.ui.normal.NormalIntersAdActivity { <init>(); }
+-keep class com.admob.test.ui.normal.NormalOpenAdActivity { <init>(); }
+-keep class com.admob.test.ui.normal.NormalRewardedActivity { <init>(); }
+-keep class com.admob.test.ui.normal.NormalRewardedIntersActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadEnterAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadIntersAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadNativeAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadOpenAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadPCNativeAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadRewardAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadRewardIntersAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.PreloadSplashActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.AdaptiveBannerAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.CollapsibleBannerAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.InlineBannerAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.MoreBannerActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.PreloadBannerAdActivity { <init>(); }
+-keep class com.admob.test.ui.preload.banner.RectangleBannerAdActivity { <init>(); }
+-keep class com.applovin.adview.AppLovinFullscreenActivity { <init>(); }
+-keep class com.applovin.adview.AppLovinFullscreenThemedActivity { <init>(); }
+-keep class com.applovin.creative.MaxCreativeDebuggerActivity { <init>(); }
+-keep class com.applovin.creative.MaxCreativeDebuggerDisplayedAdActivity { <init>(); }
+-keep class com.applovin.impl.adview.activity.FullscreenAdService { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerAdUnitDetailActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerAdUnitWaterfallsListActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerAdUnitsListActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerCmpNetworksListActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerDetailActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerMultiAdActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerTcfConsentStatusesListActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerTcfInfoListActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerTcfStringActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerTestLiveNetworkActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerTestModeNetworkActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerUnifiedFlowActivity { <init>(); }
+-keep class com.applovin.mediation.MaxDebuggerWaterfallKeywordsActivity { <init>(); }
+-keep class com.applovin.mediation.hybridAds.MaxHybridMRecAdActivity { <init>(); }
+-keep class com.applovin.mediation.hybridAds.MaxHybridNativeAdActivity { <init>(); }
+-keep class com.applovin.sdk.AppLovinInitProvider { <init>(); }
+-keep class com.applovin.sdk.AppLovinWebViewActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTAppOpenAdActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTDelegateActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTFullScreenExpressVideoActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTFullScreenVideoActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTInterstitialActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTInterstitialExpressActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTLandingPageActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTPlayableLandingPageActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTRewardExpressVideoActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTRewardVideoActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTVideoLandingPageLink2Activity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.activity.TTWebsiteActivity { <init>(); }
+-keep class com.bytedance.sdk.openadsdk.multipro.aidl.BinderPoolService { <init>(); }
+-keep class com.google.android.datatransport.runtime.backends.TransportBackendDiscovery { <init>(); }
+-keep class com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver { <init>(); }
+-keep class com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService { <init>(); }
+-keep class com.google.android.gms.ads.AdActivity { <init>(); }
+-keep class com.google.android.gms.ads.AdService { <init>(); }
+-keep class com.google.android.gms.ads.MobileAdsInitProvider { <init>(); }
+-keep class com.google.android.gms.ads.NotificationHandlerActivity { <init>(); }
+-keep class com.google.android.gms.ads.OutOfContextTestingActivity { <init>(); }
+-keep class com.google.android.gms.common.api.GoogleApiActivity { <init>(); }
+-keep class com.google.android.gms.measurement.AppMeasurementJobService { <init>(); }
+-keep class com.google.android.gms.measurement.AppMeasurementReceiver { <init>(); }
+-keep class com.google.android.gms.measurement.AppMeasurementService { <init>(); }
+-keep class com.google.firebase.auth.internal.GenericIdpActivity { <init>(); }
+-keep class com.google.firebase.auth.internal.RecaptchaActivity { <init>(); }
+-keep class com.google.firebase.components.ComponentDiscoveryService { <init>(); }
+-keep class com.google.firebase.iid.FirebaseInstanceIdReceiver { <init>(); }
+-keep class com.google.firebase.messaging.FirebaseMessagingService { <init>(); }
+-keep class com.google.firebase.provider.FirebaseInitProvider { <init>(); }
+-keep class com.mbridge.msdk.activity.MBCommonActivity { <init>(); }
+-keep class com.mbridge.msdk.out.LoadingActivity { <init>(); }
+-keep class com.mbridge.msdk.reward.player.MBRewardVideoActivity { <init>(); }
+-keep class com.unity3d.ads.adplayer.FullScreenWebViewDisplay { <init>(); }
+-keep class com.unity3d.services.ads.adunit.AdUnitActivity { <init>(); }
+-keep class com.unity3d.services.ads.adunit.AdUnitSoftwareActivity { <init>(); }
+-keep class com.unity3d.services.ads.adunit.AdUnitTransparentActivity { <init>(); }
+-keep class com.unity3d.services.ads.adunit.AdUnitTransparentSoftwareActivity { <init>(); }
+-keep class android.widget.Space { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.app.AlertController$RecycleListView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.view.menu.ActionMenuItemView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.view.menu.ExpandedMenuView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.view.menu.ListMenuItemView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ActionBarContainer { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ActionBarContextView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ActionBarOverlayLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ActionMenuView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ActivityChooserView$InnerLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.AlertDialogLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ButtonBarLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ContentFrameLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.DialogTitle { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.FitWindowsFrameLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.FitWindowsLinearLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.SearchView$SearchAutoComplete { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.Toolbar { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.appcompat.widget.ViewStubCompat { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.browser.browseractions.BrowserActionsFallbackMenuView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.constraintlayout.widget.Barrier { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.constraintlayout.widget.ConstraintLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.constraintlayout.widget.Guideline { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.coordinatorlayout.widget.CoordinatorLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.core.widget.NestedScrollView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.fragment.app.FragmentContainerView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.recyclerview.widget.RecyclerView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class androidx.viewpager.widget.ViewPager { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.applovin.exoplayer2.ui.AspectRatioFrameLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.applovin.exoplayer2.ui.SubtitleView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.applovin.exoplayer2.ui.TrackSelectionView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.applovin.impl.mediation.debugger.ui.testmode.AdControlButton { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.github.ybq.android.spinkit.SpinKitView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.appbar.MaterialToolbar { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.button.MaterialButton { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.button.MaterialButtonToggleGroup { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.chip.Chip { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.chip.ChipGroup { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.datepicker.MaterialCalendarGridView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.internal.BaselineLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.internal.CheckableImageButton { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.internal.NavigationMenuItemView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.internal.NavigationMenuView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.snackbar.Snackbar$SnackbarLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.snackbar.SnackbarContentLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.switchmaterial.SwitchMaterial { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.tabs.TabLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.textfield.TextInputEditText { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.textfield.TextInputLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.textview.MaterialTextView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.timepicker.ChipTextInputComboView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.timepicker.ClockFaceView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.timepicker.ClockHandView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.google.android.material.timepicker.TimePickerView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBRotationView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeBaitClickView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeDyImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeFramLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeSegmentsProgressBar { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.MBridgeTextView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.cusview.SoundImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.dycreator.baseview.rewardpopview.MBAcquireRewardPopView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.nativex.view.WindVaneWebViewForNV { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.nativex.view.mbfullview.StarLevelLayoutView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.playercommon.PlayerView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.splash.view.nativeview.MBNoRecycledCrashImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.splash.view.nativeview.MBSplashClickView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.bt.module.MBTempContainer { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.bt.module.MBridgeBTContainer { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.dynview.ordercamp.AblGridView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.dynview.widget.MBridgeLevelLayoutView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.dynview.widget.MBridgeRelativeLayout { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.dynview.widget.ObservableScrollView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.module.MBridgeContainerView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.video.module.MBridgeVideoView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.videocommon.view.MyImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.videocommon.view.RoundImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.videocommon.view.StarLevelView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.mbridge.msdk.widget.FeedBackButton { <init>(android.content.Context, android.util.AttributeSet); }
+
+
+# End of content from C:\Users\admin\Desktop\00NewSVN\YesAdLib\AdmobTestDemo-62579\app\build\intermediates\aapt_proguard_file\devRelease\aapt_rules.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\d002582bcb6126abcc2b6d6f5374fd51\transformed\jetified-unity-ads-4.12.1\proguard.txt
+# Keep filenames and line numbers for stack traces
+-keepattributes SourceFile,LineNumberTable
+
+# Keep JavascriptInterface for WebView bridge
+-keepattributes JavascriptInterface
+
+# Sometimes keepattributes is not enough to keep annotations
+-keep class android.webkit.JavascriptInterface {
+   *;
+}
+
+# Keep all classes in Unity Ads package
+-keep class com.unity3d.ads.** {
+   *;
+}
+
+# Keep all classes in Unity Services package
+-keep class com.unity3d.services.** {
+   *;
+}
+
+-keep class com.google.android.gms.ads.initialization.** {
+        *;
+}
+
+-keep class com.google.android.gms.ads.MobileAds {
+        *;
+}
+
+-dontwarn com.google.ads.mediation.admob.*
+-dontwarn com.google.android.gms.ads.**
+
+# Presence of Android Privacy Sandbox services is handled with runtime checks
+# Compile time ProGuard checks can lead to problems with developers (ABT-3131)
+-dontwarn android.adservices.**
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\d002582bcb6126abcc2b6d6f5374fd51\transformed\jetified-unity-ads-4.12.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\af02ab7f4ca26e05f9224f8216238eeb\transformed\jetified-firebase-auth-22.3.1\proguard.txt
+-dontwarn com.google.appengine.api.**
+-dontwarn okio.**
+-dontwarn org.apache.**
+-dontwarn retrofit.android.**
+-dontwarn retrofit.appengine.**
+-dontwarn retrofit.client.**
+-dontwarn rx.**
+
+# This is necessary for keeping SecureTokenHttpApi and IdentityToolkitHttpApi
+# Otherwise those classes get stripped out, as they are only being used
+# reflectively.
+
+-keepclasseswithmembernames interface * {
+    @retrofit.http.* <methods>;
+}
+
+# This is necessary for parsing JSON responses, since the JSON converter uses reflection to figure out the class/type of response.
+# We mainly need the *Response.classes to not be stripped out. All the firebase-auth classes are proguarded into "com.google.android.gms.internal.firebase-auth-api*".
+
+-keep class com.google.android.gms.internal.** { *; }
+
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.firebase-auth-api.zzaja {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\af02ab7f4ca26e05f9224f8216238eeb\transformed\jetified-firebase-auth-22.3.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\Desktop\00NewSVN\YesUtil\YesUtil_v1_test_open\util_lib\build\intermediates\consumer_proguard_dir\release\lib0\proguard.txt
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in C:\Users\Xiao\AppData\Local\Android\Sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+################################################################################
+#                                    Umeng                                     #
+################################################################################
+
+-keep class com.umeng.commonsdk.** {*;}
+-keep class org.repackage.** {*;}
+-keep class com.uyumao.** { *; }
+-keep class com.umeng.** { *; }
+-keep class com.uc.** { *; }
+-keep class com.efs.** { *; }
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class org.apache.http.** { *; }
+-keep class com.zui.** {*;}
+-keep class com.miui.** {*;}
+-keep class com.heytap.** {*;}
+-keep class a.** {*;}
+-keep class com.vivo.** {*;}
+#end Umeng
+
+################################################################################
+#                                Umeng Online                                  #
+################################################################################
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep class com.umeng.onlineconfig.OnlineConfigAgent {
+        public <fields>;
+        public <methods>;
+}
+-keep class com.umeng.onlineconfig.OnlineConfigLog {
+        public <fields>;
+        public <methods>;
+}
+-keep interface com.umeng.onlineconfig.UmengOnlineConfigureListener {
+        public <methods>;
+}
+#end Umeng Online
+
+# End of content from C:\Users\admin\Desktop\00NewSVN\YesUtil\YesUtil_v1_test_open\util_lib\build\intermediates\consumer_proguard_dir\release\lib0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\168c9275816ab10b4faebd3cfa44b5e9\transformed\jetified-play-services-measurement-api-21.6.1\proguard.txt
+# Can be removed once we pull in a dependency on firebase-common that includes
+# https://github.com/firebase/firebase-android-sdk/pull/1472/commits/856f1ca1151cdd88679bbc778892f23dfa34fc06#diff-a2ed34b5a38b4c6c686b09e54865eb48
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.auto.value.AutoValue$Builder
+
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\168c9275816ab10b4faebd3cfa44b5e9\transformed\jetified-play-services-measurement-api-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\0481dc3db24932d80d99339309628369\transformed\material-1.6.0\proguard.txt
+# Copyright (C) 2015 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior
+-keepattributes RuntimeVisible*Annotation*
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# AppCompatViewInflater reads the viewInflaterClass theme attribute which then
+# reflectively instantiates MaterialComponentsViewInflater using the no-argument
+# constructor. We only need to keep this constructor and the class name if
+# AppCompatViewInflater is also being kept.
+-if class androidx.appcompat.app.AppCompatViewInflater
+-keep class com.google.android.material.theme.MaterialComponentsViewInflater {
+    <init>();
+}
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\0481dc3db24932d80d99339309628369\transformed\material-1.6.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\63345218ab2808f1154e51a1c030e453\transformed\appcompat-1.5.0\proguard.txt
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# aapt is not able to read app::actionViewClass and app:actionProviderClass to produce proguard
+# keep rules. Add a commonly used SearchView to the keep list until b/109831488 is resolved.
+-keep class androidx.appcompat.widget.SearchView { <init>(...); }
+
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.appcompat.widget.AppCompatTextViewAutoSizeHelper$Impl* {
+  <methods>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\63345218ab2808f1154e51a1c030e453\transformed\appcompat-1.5.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\3bf9c521fafa0f83e555cad66c5a527a\transformed\jetified-glide-4.13.0\proguard.txt
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+
+# Uncomment for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\3bf9c521fafa0f83e555cad66c5a527a\transformed\jetified-glide-4.13.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\c2c7b4156c2bcc55258697ecae5e1a43\transformed\jetified-play-services-ads-22.6.0\proguard.txt
+-keep public class com.google.android.gms.ads.internal.ClientApi {
+  <init>();
+}
+
+# When built for Android API level < 30, Proguard warns that it can't find
+# android.telephony.TelephonyDisplayInfo (since it was added only in API level
+# 30). But, all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.telephony.TelephonyDisplayInfo
+
+# When built for Android API level < 30, Proguard warns that it can't find
+# android.view.Surface#setFrameRate(float, int) (since it was added only in API
+# level 30). But, all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.view.Surface
+
+# When built for Android API level < 31, Proguard warns that it can't find
+# android.media.ApplicationMediaCapabilities (since it was added only in API
+# level 31). But, all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.media.ApplicationMediaCapabilities
+
+# When built for Android API level < 31, Proguard warns that it can't find
+# android.media.MediaFeature (since it was added only in API level 31). But,
+# all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.media.MediaFeature
+
+# When built for Android API level < 31, Proguard warns that it can't find
+# android.media.ApplicationMediaCapabilities$Builder (since it was added only in
+# API level 31). But, all its usages are guarded by runtime checks of the API
+# level. Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.media.ApplicationMediaCapabilities$Builder
+
+# When built for Android API level < 31, Proguard warns that it can't find
+# android.media.MediaFeature$HdrType (since it was added only in API level 31).
+# But, all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.media.MediaFeature$HdrType
+
+# When built for Android API level < 32, Proguard warns that it can't find
+# android.media.AudioAttributes$Builder (since it was added only in API level
+# 32). But, all its usages are guarded by runtime checks of the API level.
+# Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.media.AudioAttributes$Builder
+
+# When built for Android API level < 33, Proguard warns that it can't find
+# android.adservices.measurement.MeasurementManager (since it was added only
+# in API level 33). But, all its usages are guarded by runtime checks of the
+# API level. Hence, it is safe to suppress Proguard's warnings.
+-dontwarn android.adservices.measurement.MeasurementManager
+
+# When built for Android API level < 33, Proguard warns that it can't find
+# javax.lang.model.element.Modifier (since it was added only in API level 33).
+# But, all its usages are guarded by runtime checks of the API level. Hence, it
+# is safe to suppress Proguard's warnings.
+-dontwarn javax.lang.model.element.Modifier
+
+# These are checked at runtime for whether they exist, so it is fine if the API level doesn't include these.
+-dontwarn android.content.pm.ApkChecksum
+-dontwarn android.content.pm.PackageManager$OnChecksumsReadyListener
+# Only for the requestChecksums method, but sadly -dontwarn can't take just a single method.
+-dontwarn android.content.pm.PackageManager
+
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.ads.zzgwm {
+  <fields>;
+}
+
+# Auto-generated proguard rule(s) with obfuscated symbol
+-dontwarn com.google.android.gms.ads.internal.util.zzy
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\c2c7b4156c2bcc55258697ecae5e1a43\transformed\jetified-play-services-ads-22.6.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\598f6b5d1f42346050c9b57f42e29cff\transformed\jetified-applovin-sdk-12.2.0\proguard.txt
+# Add project specific ProGuard rules here.
+
+# By default, the flags in this file are appended to flags specified
+# in /Users/username/Library/Android/sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+
+# Do not warn about unknown referenced methods if compiling against older Android versions or Google Play Services Identifier APIs without reflection
+-dontwarn com.applovin.**
+-dontwarn androidx.lifecycle.*
+-keepattributes SourceFile,LineNumberTable,Signature,InnerClasses,Exceptions,*Annotation*
+-keep class com.applovin.** { *; }
+-keep class com.iab.omid.library.applovin.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+-keep class com.google.android.gms.appset.** { *; }
+-keep class com.google.android.gms.tasks.** { *; }
+-keep public class com.google.android.ump.** { public protected *; }
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\598f6b5d1f42346050c9b57f42e29cff\transformed\jetified-applovin-sdk-12.2.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\8f9d608183ecf72c6ef577527682ffa9\transformed\jetified-play-services-cronet-18.0.1\proguard.txt
+# Keep all of Cronet API as it's used by the Cronet module.
+-keep public class org.chromium.net.* {
+    !private *;
+    *;
+}
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\8f9d608183ecf72c6ef577527682ffa9\transformed\jetified-play-services-cronet-18.0.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\d7dfe53bb0cd7fe5b68a9c08b048876b\transformed\jetified-play-services-base-18.1.0\proguard.txt
+# b/35135904 Ensure that proguard will not strip the mResultGuardian.
+-keepclassmembers class com.google.android.gms.common.api.internal.BasePendingResult {
+  com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian mResultGuardian;
+}
+
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\d7dfe53bb0cd7fe5b68a9c08b048876b\transformed\jetified-play-services-base-18.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\c1861c264bc2dc9677c503320a958888\transformed\jetified-play-services-ads-lite-22.6.0\proguard.txt
+# Keep implementations of the AdMob mediation adapter interfaces. Adapters for
+# third party ad networks implement these interfaces and are invoked by the
+# AdMob SDK via reflection.
+
+-keep class * implements com.google.android.gms.ads.mediation.MediationAdapter {
+  public *;
+}
+-keep class * implements com.google.ads.mediation.MediationAdapter {
+  public *;
+}
+-keep class * implements com.google.android.gms.ads.mediation.customevent.CustomEvent {
+  public *;
+}
+-keep class * implements com.google.ads.mediation.customevent.CustomEvent {
+  public *;
+}
+-keep class * extends com.google.android.gms.ads.mediation.MediationAdNetworkAdapter {
+  public *;
+}
+-keep class * extends com.google.android.gms.ads.mediation.Adapter {
+  public *;
+}
+
+# Keep classes used for offline ads created by reflection. WorkManagerUtil is
+# created reflectively by callers within GMSCore and OfflineNotificationPoster
+# is created reflectively by WorkManager.
+-keep class com.google.android.gms.ads.internal.util.WorkManagerUtil {
+  public *;
+}
+-keep class com.google.android.gms.ads.internal.offline.buffering.OfflineNotificationPoster {
+  public *;
+}
+-keep class com.google.android.gms.ads.internal.offline.buffering.OfflinePingSender {
+  public *;
+}
+
+# Keeps the entry for full SDK to access via reflection.
+-keep class com.google.android.gms.ads.internal.client.LiteSdkInfo {
+  public *;
+}
+
+# Keeps the entry for first party plugins to access via reflection.
+-keep class com.google.android.gms.ads.MobileAds {
+  private void setPlugin(java.lang.String);
+}
+
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.ads.zzgwm {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\c1861c264bc2dc9677c503320a958888\transformed\jetified-play-services-ads-lite-22.6.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\0973976cd0ed30ea655f114d6c28f5b7\transformed\jetified-play-services-measurement-21.6.1\proguard.txt
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\0973976cd0ed30ea655f114d6c28f5b7\transformed\jetified-play-services-measurement-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\49a34ec6c9beba4821ba9494e545d584\transformed\jetified-play-services-measurement-sdk-21.6.1\proguard.txt
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\49a34ec6c9beba4821ba9494e545d584\transformed\jetified-play-services-measurement-sdk-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\8705e5c851a1a1cfeb91ac9c5de03ddd\transformed\jetified-play-services-measurement-impl-21.6.1\proguard.txt
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\8705e5c851a1a1cfeb91ac9c5de03ddd\transformed\jetified-play-services-measurement-impl-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\2c966008f31b84597ea36192eb2308c1\transformed\jetified-recaptcha-18.4.0\proguard.txt
+# Proguard cannot process META-INF/versions/9.
+# See https://discuss.gradle.org/t/meta-inf-version-duplicate-error-when-using-proguard/31380
+-dontwarn module-info
+
+# Ignore the warning becuse ClassValueCtorCache is never used on Android.
+-dontwarn kotlinx.coroutines.internal.ClassValueCtorCache
+
+# Ignore warning due to the usage from Guava and kotlinx.coroutines.internal.ClassValueCtorCache
+-dontwarn java.lang.ClassValue
+
+# Ignore warning to accommodate the missing injar of kotlinx.coroutines.flow for
+# androidx.slidingpanelayout.widget.
+-dontwarn kotlinx.coroutines.flow.**
+
+# This prevents the SDK to be obfuscated again when building the android app.
+-keep class com.google.android.recaptcha.** { *; }
+
+# This is required for recaptcha mobile to function properly.
+# See: https://cloud.google.com/recaptcha-enterprise/docs/instrument-android-apps
+-keep class com.google.android.play.core.integrity.** { *; }
+-keep class com.google.android.gms.tasks.** {*;}
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.recaptcha.internal.zzit {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\2c966008f31b84597ea36192eb2308c1\transformed\jetified-recaptcha-18.4.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\415055b12a5b79ab8078b70a1295cec7\transformed\jetified-firebase-auth-interop-20.0.0\proguard.txt
+# Can be removed once we pull in a dependency on firebase-common that includes
+# https://github.com/firebase/firebase-android-sdk/pull/1472/commits/856f1ca1151cdd88679bbc778892f23dfa34fc06#diff-a2ed34b5a38b4c6c686b09e54865eb48
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.auto.value.AutoValue$Builder
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\415055b12a5b79ab8078b70a1295cec7\transformed\jetified-firebase-auth-interop-20.0.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\ef1c8a15152e75e4192f79d752d1c71a\transformed\jetified-firebase-common-20.4.3\proguard.txt
+-dontwarn com.google.firebase.platforminfo.KotlinDetector
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.auto.value.AutoValue$Builder
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\ef1c8a15152e75e4192f79d752d1c71a\transformed\jetified-firebase-common-20.4.3\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\f4ebf7c7dfa40b84c688f114327cf765\transformed\jetified-ui-release\proguard.txt
+# Copyright (C) 2020 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# We supply these as stubs and are able to link to them at runtime
+# because they are hidden public classes in Android. We don't want
+# R8 to complain about them not being there during optimization.
+-dontwarn android.view.RenderNode
+-dontwarn android.view.DisplayListCanvas
+
+-keepclassmembers class androidx.compose.ui.platform.ViewLayerContainer {
+    protected void dispatchGetDisplayList();
+}
+
+-keepclassmembers class androidx.compose.ui.platform.AndroidComposeView {
+    android.view.View findViewByAccessibilityIdTraversal(int);
+}
+
+# Users can create Modifier.Node instances that implement multiple Modifier.Node interfaces,
+# so we cannot tell whether two modifier.node instances are of the same type without using
+# reflection to determine the class type. See b/265188224 for more context.
+-keep,allowshrinking class * extends androidx.compose.ui.node.ModifierNodeElement
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\f4ebf7c7dfa40b84c688f114327cf765\transformed\jetified-ui-release\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\7a5fba9aac2d5d522fb2bc7f4973d0e7\transformed\jetified-runtime-release\proguard.txt
+-assumenosideeffects public class androidx.compose.runtime.ComposerKt {
+    void sourceInformation(androidx.compose.runtime.Composer,java.lang.String);
+    void sourceInformationMarkerStart(androidx.compose.runtime.Composer,int,java.lang.String);
+    void sourceInformationMarkerEnd(androidx.compose.runtime.Composer);
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\7a5fba9aac2d5d522fb2bc7f4973d0e7\transformed\jetified-runtime-release\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\4982eb2e1ad2ee0e62136eb2c3526323\transformed\rules\lib\META-INF\com.android.tools\r8\coroutines.pro
+# When editing this file, update the following files as well:
+# - META-INF/proguard/coroutines.pro
+# - META-INF/com.android.tools/proguard/coroutines.pro
+
+# Most of volatile fields are updated with AFU and should not be mangled
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# Same story for the standard library's SafeContinuation that also uses AtomicReferenceFieldUpdater
+-keepclassmembers class kotlin.coroutines.SafeContinuation {
+    volatile <fields>;
+}
+
+# These classes are only required by kotlinx.coroutines.debug.AgentPremain, which is only loaded when
+# kotlinx-coroutines-core is used as a Java agent, so these are not needed in contexts where ProGuard is used.
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler
+-dontwarn java.lang.instrument.Instrumentation
+-dontwarn sun.misc.Signal
+
+# Only used in `kotlinx.coroutines.internal.ExceptionsConstructor`.
+# The case when it is not available is hidden in a `try`-`catch`, as well as a check for Android.
+-dontwarn java.lang.ClassValue
+
+# An annotation used for build tooling, won't be directly accessed.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\4982eb2e1ad2ee0e62136eb2c3526323\transformed\rules\lib\META-INF\com.android.tools\r8\coroutines.pro
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\567d9c0baa39deb3014ed93ab73b4c87\transformed\jetified-play-services-tasks-18.1.0\proguard.txt
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\567d9c0baa39deb3014ed93ab73b4c87\transformed\jetified-play-services-tasks-18.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\2cf7900403de7f3b614d42118ec35d53\transformed\jetified-play-services-measurement-sdk-api-21.6.1\proguard.txt
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\2cf7900403de7f3b614d42118ec35d53\transformed\jetified-play-services-measurement-sdk-api-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\221fa11b04bda57f50f430d95b98df5d\transformed\jetified-play-services-measurement-base-21.6.1\proguard.txt
+# We keep all fields for every generated proto file as the runtime uses
+# reflection over them that ProGuard cannot detect. Without this keep
+# rule, fields may be removed that would cause runtime failures.
+-keepclassmembers class * extends com.google.android.gms.internal.measurement.zzjt {
+  <fields>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\221fa11b04bda57f50f430d95b98df5d\transformed\jetified-play-services-measurement-base-21.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\fa17c29ef05b9843e6ea0403dcc8fd4a\transformed\jetified-play-services-basement-18.3.0\proguard.txt
+# Needed when building against pre-Marshmallow SDK.
+-dontwarn android.security.NetworkSecurityPolicy
+
+# Needed when building against Marshmallow SDK.
+-dontwarn android.app.Notification
+
+# Protobuf has references not on the Android boot classpath
+-dontwarn sun.misc.Unsafe
+-dontwarn libcore.io.Memory
+
+# Annotations used during internal SDK shrinking.
+-dontwarn com.google.android.apps.common.proguard.UsedBy*
+-dontwarn com.google.android.apps.common.proguard.SideEffectFree
+
+# Annotations referenced by the SDK but whose definitions are contained in
+# non-required dependencies.
+-dontwarn javax.annotation.**
+-dontwarn org.checkerframework.**
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn org.jspecify.nullness.NullMarked
+
+# Annotations no longer exist. Suppression prevents ProGuard failures in
+# SDKs which depend on earlier versions of play-services-basement.
+-dontwarn com.google.android.gms.common.util.VisibleForTesting
+
+# Proguard flags for consumers of the Google Play services SDK
+# https://developers.google.com/android/guides/setup#add_google_play_services_to_your_project
+
+# Keep SafeParcelable NULL value, needed for reflection by DowngradeableSafeParcel
+-keepclassmembers public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+    public static final *** NULL;
+}
+
+# Needed for Parcelable/SafeParcelable classes & their creators to not get renamed, as they are
+# found via reflection.
+-keep class com.google.android.gms.common.internal.ReflectedParcelable
+-keepnames class * implements com.google.android.gms.common.internal.ReflectedParcelable
+-keepclassmembers class * implements android.os.Parcelable {
+  public static final *** CREATOR;
+}
+
+# Keep the classes/members we need for client functionality.
+-keep @interface android.support.annotation.Keep
+-keep @androidx.annotation.Keep class *
+-keepclasseswithmembers class * {
+  @androidx.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+  @androidx.annotation.Keep <methods>;
+}
+
+# Keep androidX equivalent of above android.support to allow Jetification.
+-keep @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class *
+-keepclasseswithmembers class * {
+  @androidx.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+  @androidx.annotation.Keep <methods>;
+}
+
+# Keep the names of classes/members we need for client functionality.
+-keep @interface com.google.android.gms.common.annotation.KeepName
+-keepnames @com.google.android.gms.common.annotation.KeepName class *
+-keepclassmembernames class * {
+  @com.google.android.gms.common.annotation.KeepName *;
+}
+
+# Keep Dynamite API entry points
+-keep @interface com.google.android.gms.common.util.DynamiteApi
+-keep @com.google.android.gms.common.util.DynamiteApi public class * {
+  public <fields>;
+  public <methods>;
+}
+
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\fa17c29ef05b9843e6ea0403dcc8fd4a\transformed\jetified-play-services-basement-18.3.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\63318387cc401942c37dbc14068c5486\transformed\fragment-1.5.1\proguard.txt
+# Copyright (C) 2020 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The default FragmentFactory creates Fragment instances using reflection
+-if public class ** extends androidx.fragment.app.Fragment
+-keepclasseswithmembers,allowobfuscation public class <1> {
+    public <init>();
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\63318387cc401942c37dbc14068c5486\transformed\fragment-1.5.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\82a4af2baf73ad0622de69ccb5bf83a3\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\proguard.txt
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.ViewModel {
+    <init>(androidx.lifecycle.SavedStateHandle);
+}
+
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application,androidx.lifecycle.SavedStateHandle);
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\82a4af2baf73ad0622de69ccb5bf83a3\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\e5115671136f6354441d1476c40a30cf\transformed\work-runtime-2.7.0\proguard.txt
+-keep class * extends androidx.work.Worker
+-keep class * extends androidx.work.InputMerger
+# Keep all constructors on ListenableWorker, Worker (also marked with @Keep)
+-keep public class * extends androidx.work.ListenableWorker {
+    public <init>(...);
+}
+# We need to keep WorkerParameters for the ListenableWorker constructor
+-keep class androidx.work.WorkerParameters
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\e5115671136f6354441d1476c40a30cf\transformed\work-runtime-2.7.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\ab411c9dd0c978d32f30c0edfdeef254\transformed\jetified-lifecycle-process-2.6.1\proguard.txt
+# this rule is need to work properly when app is compiled with api 28, see b/142778206
+-keepclassmembers class * extends androidx.lifecycle.EmptyActivityLifecycleCallbacks { *; }
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\ab411c9dd0c978d32f30c0edfdeef254\transformed\jetified-lifecycle-process-2.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\4615720e7a6e629aa0a5a0fec63f86f7\transformed\jetified-savedstate-1.2.1\proguard.txt
+# Copyright (C) 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+-keepclassmembers,allowobfuscation class * implements androidx.savedstate.SavedStateRegistry$AutoRecreated {
+    <init>();
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\4615720e7a6e629aa0a5a0fec63f86f7\transformed\jetified-savedstate-1.2.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\8f3c2c9740a730cc09a81c39ff2adada\transformed\lifecycle-viewmodel-2.6.1\proguard.txt
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.ViewModel {
+    <init>();
+}
+
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application);
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\8f3c2c9740a730cc09a81c39ff2adada\transformed\lifecycle-viewmodel-2.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\2570b914fbf61e02cd2940dd3f065335\transformed\coordinatorlayout-1.1.0\proguard.txt
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior and ViewPager's DecorView
+-keepattributes *Annotation*
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\2570b914fbf61e02cd2940dd3f065335\transformed\coordinatorlayout-1.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\99b36e5a93a7e85db42a33a03c328bea\transformed\transition-1.2.0\proguard.txt
+# Copyright (C) 2017 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class androidx.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+  androidx.transition.ChangeBounds$ViewBounds mViewBounds;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\99b36e5a93a7e85db42a33a03c328bea\transformed\transition-1.2.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\9f3691e7d142874b4597fc5e12b62162\transformed\vectordrawable-animated-1.1.0\proguard.txt
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# keep setters in VectorDrawables so that animations can still work.
+-keepclassmembers class androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$* {
+   void set*(***);
+   *** get*();
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\9f3691e7d142874b4597fc5e12b62162\transformed\vectordrawable-animated-1.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\dae3093b19be058bccb34cdafa1f2b88\transformed\webkit-1.6.1\proguard.txt
+# Copyright 2018 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# We need to avoid obfuscating the support library boundary interface because
+# this API is shared with the Android Support Library.
+# Note that we only 'keep' the package org.chromium.support_lib_boundary itself,
+# any sub-packages of that package can still be obfuscated.
+-keep public class org.chromium.support_lib_boundary.* { public *; }
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Prevent WebViewClientCompat from being renamed, since chromium depends on this name.
+-keepnames public class androidx.webkit.WebViewClientCompat
+
+# Prevent ProcessGlobalConfig and member sProcessGlobalConfig from being renamed, since chromium
+# depends on this name.
+-keepnames public class androidx.webkit.ProcessGlobalConfig {
+    private static final *** sProcessGlobalConfig;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\dae3093b19be058bccb34cdafa1f2b88\transformed\webkit-1.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\3b5b99bb6a1fbcf7d10475a2eacedce0\transformed\recyclerview-1.1.0\proguard.txt
+# Copyright (C) 2015 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# When layoutManager xml attribute is used, RecyclerView inflates
+#LayoutManagers' constructors using reflection.
+-keep public class * extends androidx.recyclerview.widget.RecyclerView$LayoutManager {
+    public <init>(android.content.Context, android.util.AttributeSet, int, int);
+    public <init>();
+}
+
+-keepclassmembers class androidx.recyclerview.widget.RecyclerView {
+    public void suppressLayout(boolean);
+    public boolean isLayoutSuppressed();
+}
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\3b5b99bb6a1fbcf7d10475a2eacedce0\transformed\recyclerview-1.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\db42ac5ccbf4c0445246862264871739\transformed\jetified-ads-sdk-5.8.0.7\proguard.txt
+-ignorewarnings
+-keep class com.bytedance.sdk.** { *; }
+-keep class com.bytedance.adsdk.** { *; }
+-keep class com.bytedance.mobsec.** { *; }
+-keep class com.bytedance.applog.** { *; }
+-keep class com.apm.insight.** { *; }
+-keep class com.bykv.vk.openvk.component.** { *; }
+-keep class com.com.bytedance.overseas.sdk.** { *; }
+-keep class ms.bd.o.Pgl.** { *; }
+-keep class com.bykv.vk.openvk.preload.**{*;}
+-keep class com.iab.omid.library.bytedance2.**{*;}
+-keep class com.pgl.ssdk.**{*;}
+
+
+-keep public class com.bytedance.sdk.openadsdk.core.act.ActServiceConnection{*;}
+-keep public class com.bytedance.sdk.openadsdk.core.act.AdActAction$*{*;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\db42ac5ccbf4c0445246862264871739\transformed\jetified-ads-sdk-5.8.0.7\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\5fcc1733bbf31fdcf3fed7a7cc0a50ca\transformed\core-1.10.0\proguard.txt
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.ViewCompat$Api* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.WindowInsetsCompat$*Impl* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.app.NotificationCompat$*$Api*Impl {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.os.UserHandleCompat$Api*Impl {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.widget.EdgeEffectCompat$Api*Impl {
+  <methods>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\5fcc1733bbf31fdcf3fed7a7cc0a50ca\transformed\core-1.10.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\661d7237703a04de5effcb1837d7afaa\transformed\lifecycle-runtime-2.6.1\proguard.txt
+-keepattributes AnnotationDefault,
+                RuntimeVisibleAnnotations,
+                RuntimeVisibleParameterAnnotations,
+                RuntimeVisibleTypeAnnotations
+
+-keepclassmembers enum androidx.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep !interface * implements androidx.lifecycle.LifecycleObserver {
+}
+
+-keep class * implements androidx.lifecycle.GeneratedAdapter {
+    <init>(...);
+}
+
+-keepclassmembers class ** {
+    @androidx.lifecycle.OnLifecycleEvent *;
+}
+
+# this rule is need to work properly when app is compiled with api 28, see b/142778206
+# Also this rule prevents registerIn from being inlined.
+-keepclassmembers class androidx.lifecycle.ReportFragment$LifecycleCallbacks { *; }
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\661d7237703a04de5effcb1837d7afaa\transformed\lifecycle-runtime-2.6.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\13890fb7b82d6e6e034bb60f786bf3b4\transformed\rules\lib\META-INF\com.android.tools\r8-from-1.6.0\coroutines.pro
+# Allow R8 to optimize away the FastServiceLoader.
+# Together with ServiceLoader optimization in R8
+# this results in direct instantiation when loading Dispatchers.Main
+-assumenosideeffects class kotlinx.coroutines.internal.MainDispatcherLoader {
+    boolean FAST_SERVICE_LOADER_ENABLED return false;
+}
+
+-assumenosideeffects class kotlinx.coroutines.internal.FastServiceLoaderKt {
+    boolean ANDROID_DETECTED return true;
+}
+
+# Disable support for "Missing Main Dispatcher", since we always have Android main dispatcher
+-assumenosideeffects class kotlinx.coroutines.internal.MainDispatchersKt {
+    boolean SUPPORT_MISSING return false;
+}
+
+# Statically turn off all debugging facilities and assertions
+-assumenosideeffects class kotlinx.coroutines.DebugKt {
+    boolean getASSERTIONS_ENABLED() return false;
+    boolean getDEBUG() return false;
+    boolean getRECOVER_STACK_TRACES() return false;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\13890fb7b82d6e6e034bb60f786bf3b4\transformed\rules\lib\META-INF\com.android.tools\r8-from-1.6.0\coroutines.pro
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\e107b11f5c2be522e914c93768bcff1c\transformed\jetified-transport-backend-cct-3.1.8\proguard.txt
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.auto.value.AutoValue$Builder
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\e107b11f5c2be522e914c93768bcff1c\transformed\jetified-transport-backend-cct-3.1.8\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\b9615ad331a19305d3e9537441ebaa87\transformed\jetified-startup-runtime-1.1.1\proguard.txt
+# It's important that we preserve initializer names, given they are used in the AndroidManifest.xml.
+-keepnames class * extends androidx.startup.Initializer
+
+# These Proguard rules ensures that ComponentInitializers are are neither shrunk nor obfuscated,
+# and are a part of the primary dex file. This is because they are discovered and instantiated
+# during application startup.
+-keep class * extends androidx.startup.Initializer {
+    # Keep the public no-argument constructor while allowing other methods to be optimized.
+    <init>();
+}
+
+-assumenosideeffects class androidx.startup.StartupLogger { public static <methods>; }
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\b9615ad331a19305d3e9537441ebaa87\transformed\jetified-startup-runtime-1.1.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\c201fce891b0d89f8f3689515b1e1632\transformed\versionedparcelable-1.1.1\proguard.txt
+-keep class * implements androidx.versionedparcelable.VersionedParcelable
+-keep public class android.support.**Parcelizer { *; }
+-keep public class androidx.**Parcelizer { *; }
+-keep public class androidx.versionedparcelable.ParcelImpl
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\c201fce891b0d89f8f3689515b1e1632\transformed\versionedparcelable-1.1.1\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\720987eb06a915ad1a921728ef0ac4ba\transformed\room-runtime-2.2.5\proguard.txt
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\720987eb06a915ad1a921728ef0ac4ba\transformed\room-runtime-2.2.5\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\3b2373e26027a0ae1841ffde7a01b0f3\transformed\jetified-firebase-components-17.1.5\proguard.txt
+-dontwarn com.google.firebase.components.Component$Instantiation
+-dontwarn com.google.firebase.components.Component$ComponentType
+
+-keep class * implements com.google.firebase.components.ComponentRegistrar
+-keep,allowshrinking interface com.google.firebase.components.ComponentRegistrar
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\3b2373e26027a0ae1841ffde7a01b0f3\transformed\jetified-firebase-components-17.1.5\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\7c057aa17406b6c538f1fcf9a058f128\transformed\jetified-transport-api-3.1.0\proguard.txt
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.auto.value.AutoValue$Builder
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\7c057aa17406b6c538f1fcf9a058f128\transformed\jetified-transport-api-3.1.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\fc75f2a6cf3b047c382f85594175d1ba\transformed\jetified-crash_monitor-1.3.8.13\proguard.txt
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in /Users/chenjian/Library/Android/sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+-dontskipnonpubliclibraryclassmembers
+-keep,allowobfuscation @interface androidx.annotation.Keep
+
+-keep @androidx.annotation.Keep class *
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+}
+
+-keep class com.apm.insight.nativecrash.NativeImpl {
+  private static void handleNativeCrashInJava(java.lang.String);
+  private static void reportEventForAnrMonitor();
+}
+
+-keep class com.apm.insight.Npth{*;}
+-keep class com.apm.insight.AttachUserData{*;}
+-keep class com.apm.insight.ICrashCallback{*;}
+-keep class com.apm.insight.IOOMCallback{*;}
+-keep class com.apm.insight.ICrashFilter{*;}
+-keep class com.apm.insight.CrashType{*;}
+-keep class com.apm.insight.ICommonParams{*;}
+-keep class com.apm.insight.NpthInit{*;}
+-keep class com.apm.insight.MonitorCrash{*;}
+-keep class com.apm.insight.MonitorCrash$Config{*;}
+-keep class com.apm.insight.MonitorCrash$HeaderParams{*;}
+-keep class com.apm.insight.runtime.ConfigManager{*;}
+-keep class com.apm.insight.entity.Header {
+    public static void addOtherHeader(org.json.JSONObject);
+    public static void addRuntimeHeader(org.json.JSONObject);
+}
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\fc75f2a6cf3b047c382f85594175d1ba\transformed\jetified-crash_monitor-1.3.8.13\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\f27d24e79c52a0f0f7439b4d990facea\transformed\rules\lib\META-INF\proguard\androidx-annotations.pro
+-keep,allowobfuscation @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+-keepclassmembers,allowobfuscation class * {
+  @androidx.annotation.DoNotInline <methods>;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\f27d24e79c52a0f0f7439b4d990facea\transformed\rules\lib\META-INF\proguard\androidx-annotations.pro
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\0f7885483e47064ebe6fb5b5a461ca92\transformed\jetified-unity_lib_release_v5.0\proguard.txt
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in C:\Users\Xiao\AppData\Local\Android\Sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+
+################################################################################
+#                               support design                                 #
+################################################################################
+#@link http://stackoverflow.com/a/31028536
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+#end support design
+
+################################################################################
+#                             com.google.vending                               #
+################################################################################
+#error : Note: the configuration refers to the unknown class 'com.google.vending.licensing.ILicensingService'
+#solution : @link http://stackoverflow.com/a/14463528
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote **ILicensingService
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+#end com.google.vending
+
+################################################################################
+#                                    unity                                     #
+################################################################################
+-keep public class com.google.android.gms.ads.** {
+    public *;
+}
+-keep public class com.google.ads.** {
+    public *;
+}
+-keep class com.google.android.gms.internal.** { *; }
+-keep class com.google.ads.mediation.unity.AdMobAdapter { *; }
+-keep class com.google.ads.mediation.AbstractAdViewAdapter { *; }
+-keep class com.google.ads.mediation.AdUrlAdapter { *; }
+#end unity
+
+################################################################################
+#                                  GreenRobot                                  #
+################################################################################
+-dontwarn de.greenrobot.event.util.**
+#end GreenRobot
+
+#begin greendao
+################################################################################
+#                                  greenDAO 3                                  #
+################################################################################
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+# If you do not use SQLCipher:
+-dontwarn org.greenrobot.greendao.database.**
+# If you do not use RxJava:
+-dontwarn rx.**
+### greenDAO 2
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+#end greenDAO 3
+
+#begin GreenDaoUpgradeHelper
+################################################################################
+#                            GreenDaoUpgradeHelper                             #
+################################################################################
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+    public static void dropTable(org.greenrobot.greendao.database.Database, boolean);
+    public static void createTable(org.greenrobot.greendao.database.Database, boolean);
+}
+#end GreenDaoUpgradeHelper
+
+################################################################################
+#                                     Gson                                     #
+################################################################################
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+#end Gson
+
+################################################################################
+#                                  BUTTERKNIFE                                 #
+################################################################################
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+#end BUTTERKNIFE
+
+################################################################################
+#                                    Glide                                     #
+################################################################################
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
+#end Glide
+
+################################################################################
+#                                    OkHttp                                    #
+################################################################################
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+#end OkHttp
+
+################################################################################
+#                     not sure##by Eason FOR okHttp Glide                      #
+################################################################################
+-dontwarn com.bumptech.glide.load.model.stream.StreamModelLoader
+-dontwarn com.bumptech.glide.load.model.GenericLoaderFactory
+-dontwarn com.bumptech.glide.load.model.stream.StreamModelLoader
+-dontwarn com.bumptech.glide.load.model.ModelLoaderFactory
+-keep class com.bumptech.glide.load.model.ModelLoaderFactory
+-dontwarn com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader { *; }
+#end not sure##by Eason FOR okHttp Glide
+
+################################################################################
+#                                    Parcel                                    #
+################################################################################
+-keep class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    public <fields>;
+    private <fields>;
+}
+#end Parcel
+
+################################################################################
+#                                   Eventbus                                   #
+################################################################################
+#begin eventbus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+#end Eventbus
+
+################################################################################
+#                                  fastetxml                                   #
+################################################################################
+# Jackson
+-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonCreator class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonValue class * { *; }
+-keep class com.fasterxml.** { *; }
+-keep class org.codehaus.** { *; }
+-keep interface org.codehaus.jackson.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
+    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
+}
+# General
+-keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+#�Լ����
+-dontwarn okio.**
+-dontwarn org.w3c.dom.**
+#end fastetxml
+
+################################################################################
+#                          com.yanzhenjie:permission                           #
+################################################################################
+-dontwarn com.yanzhenjie.permission.**
+#end com.yanzhenjie:permission
+
+################################################################################
+#                                    Pangle                                    #
+################################################################################
+-keep class com.bytedance.sdk.** { *; }
+#end Pangle
+
+
+################################################################################
+#                                    Other                                    #
+################################################################################
+#指定压缩级别
+-optimizationpasses 6
+# 是否混淆非公共的库的类
+-dontskipnonpubliclibraryclasses
+#不跳过非公共的库的类成员
+-dontskipnonpubliclibraryclassmembers
+
+#混淆时所采用的算法(谷歌推荐算法)
+-optimizations !code/simplification/arithmetic,!field/,!class/merging/,!code/allocation/variable
+
+#把混淆类中的方法名也混淆了
+-useuniqueclassmembernames
+
+#优化时允许访问并修改有修饰符的类和类的成员
+-allowaccessmodification
+
+#将文件来源重命名为“SourceFile”字符串
+-renamesourcefileattribute SourceFile
+#保留行号
+-keepattributes SourceFile,LineNumberTable
+#end Other
+
+#################################################################################
+##                     ad_lib                                                   #
+#################################################################################
+
+-keeppackagenames
+
+-keep class com.yes.app.lib.ads.AdBuilder{
+    public *;
+}
+-keep class com.yes.app.lib.ads.BaseAdConfigBuilder{
+   public *;
+}
+-keep class com.yes.app.lib.ads.BaseAdConfigBuilder$Builder{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.AdIds{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.AdConstant{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.AdConstant$*{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.base.InitStatus{
+    public *;
+}
+-keep class com.yes.app.lib.util.LocationCheckHelper{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.util.FirebaseUtils{
+    public *;
+}
+-keep class com.yes.app.lib.ads.AdConfigBuilder{
+    public *;
+}
+-keep class com.yes.app.lib.ads.AdConfigBuilder$*{
+    public *;
+}
+
+##########################################################
+#======================  listener  ======================#
+##########################################################
+-keep class com.yes.app.lib.ads.listener.**{
+    *;
+}
+-keep class com.yes.app.lib.ads.listener.**$*{
+    *;
+}
+-keep interface com.yes.app.lib.ads.base.ICMPInterface{
+    *;
+}
+##########################################################
+#======================  Base  ======================#
+##########################################################
+-keep class * extends com.yes.app.lib.ads.base.**Callback {
+     public *;
+}
+-keep class com.yes.app.lib.ads.**CallBack$*{
+   public *;
+}
+-keep class com.yes.app.lib.ads.**Callback{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.AdBuilderProxy{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.IAdBuilder{
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.IAdConfigBuilder{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.IAdManager{
+
+}
+-keep interface com.yes.app.lib.ads.base.IConfigBuilder{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.IFullScreenAdLoadCallback{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.IFullScreenAdShowCallback{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.ILoadCallback{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.IShowCallback{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.base.LocalAdListener{
+    public *;
+}
+-keep class * extends com.yes.app.lib.ads.base.BaseConfig {
+    public *;
+}
+-keep class * extends com.yes.app.lib.ads.base.BaseLoadConfig {
+    public *;
+}
+-keep class * extends com.yes.app.lib.ads.base.BaseInitConfig {
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.**PreloadConfig{
+    public *;
+}
+-keep class * extends com.yes.app.lib.ads.base.BaseAd {
+    public *;
+}
+-keep class com.yes.app.lib.ads.base.BaseAd{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.base.BaseError{
+   public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.INativeBannerAds{
+   public *;
+}
+
+##########################################################
+#======================  enterAd  ======================#
+##########################################################
+-keep class com.yes.app.lib.ads.enterAd.EnterAdInitConfig{
+    public *;
+}
+-keep class com.yes.app.lib.ads.enterAd.EnterAdManager{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.enterAd.IEnterAd{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.enterAd.IEnterAdManager{
+    public *;
+}
+
+##########################################################
+#======================  openAd  ======================#
+##########################################################
+-keep interface com.yes.app.lib.ads.openAd.OnAppOpenAdControlListener{
+    *;
+}
+-keep class com.yes.app.lib.ads.openAd.AppOpenAdInitConfig{
+    public *;
+}
+-keep class com.yes.app.lib.ads.openAd.AppOpenAdManager{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.openAd.OnLoadingForAppOpenAdListener{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.openAd.IAppOpenAd{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.openAd.IAppOpenAdManager{
+    public *;
+}
+
+######################################################
+#==================  interstitial  ==================#
+######################################################
+-keep interface com.yes.app.lib.ads.interstitial.IIntersAdShowActivity
+-keep interface com.yes.app.lib.ads.interstitial.IInterAdManager{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.interstitial.IIntersAd{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.interstitial.IntersAdManager{
+    public *;
+
+}
+-keep class com.yes.app.lib.ads.interstitial.IntersAdInitConfig{
+    public *;
+}
+
+
+##########################################################
+#======================  rewardAd  ======================#
+##########################################################
+-keep class com.yes.app.lib.ads.rewardAd.BaseRewardAdShowCallBack{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.rewardAd.BaseRewardItem{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.rewardAd.IRewardedAd{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.rewardAd.IRewardAdManager{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.rewardAd.IRewardIntersAdManager{
+    public *;
+}
+-keep class com.yes.app.lib.ads.rewardAd.RewardAdInitConfig{
+    public *;
+}
+-keep class com.yes.app.lib.ads.rewardAd.RewardIntersAdManager{
+    public *;
+}
+-keep class com.yes.app.lib.ads.rewardAd.RewardAdManager{
+    public *;
+}
+-keep class com.yes.app.lib.ads.rewardAd.RewardIntersAdInitConfig{
+    public *;
+}
+##########################################################
+#======================  bannerAd  ======================#
+##########################################################
+-keep class com.yes.app.lib.ads.bannerAd.**{
+    public *;
+}
+##########################################################
+#=====================  pcNativeAd  =====================#
+##########################################################
+-keep interface com.yes.app.lib.ads.pcNativeAd.IPCNativeAdManager {
+   public *;
+}
+-keep class com.yes.app.lib.ads.pcNativeAd.IPCNativeAdView{
+    public *;
+}
+-keep class com.yes.app.lib.ads.pcNativeAd.PCNativeAdManager{
+    public *;
+}
+##########################################################
+#======================  nativeAd  ======================#
+##########################################################
+-keep class com.yes.app.lib.ads.nativeAd.BaseNativeAdProxy{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.IMediaContent{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.INativeAd{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.IMediaView{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.INativeBannerAds{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.INativeBannerAdsCallBack{
+    public *;
+}
+-keep interface com.yes.app.lib.ads.nativeAd.INativeView{
+    public *;
+}
+-keep class com.yes.app.lib.ads.nativeAd.NativeAdManager{
+    public *;
+}
+-keep class com.yes.app.lib.ads.nativeAd.NativePreloadConfig{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.nativeAd.NativeAdInitConfig{
+    public *;
+}
+
+##########################################################
+#======================== promote =======================#
+##########################################################
+
+-keep class promote.core.ConfigApplication{
+    public *;
+}
+-keep  class promote.core.ConfigApplication$*{
+    *;
+}
+-keep  interface promote.core.ConfigApplication$*{
+    *;
+}
+-keep class com.yes.app.lib.executor.**{
+    public *;
+}
+-keep class promote.core.util.PromoteCoreUtil{
+    public *;
+}
+-keep class promote.core.util.PromoteCoreUtil{
+    public *;
+}
+
+-keep class promote.core.ApplicationLifecycleListener{
+    *;
+}
+-keep class promote.core.ConfigActivityLifecycleCallbacks{
+    *;
+}
+-keep class  promote.core.update.**{
+    public *;
+}
+-keep class promote.core.window.**{
+    public *;
+}
+-keep class com.yes.app.lib.executor.**{
+    public *;
+}
+-keep class com.yes.app.lib.util.**{
+    public *;
+}
+#
+-keep class com.yes.app.lib.ads.AdUnityBuilder{
+    public *;
+}
+
+-keep class com.yes.app.lib.ads.unity.base.UnityBaseNativeBannerAdManager{
+
+}
+
+-keep class com.yes.app.lib.ads.unity.base.UnityBaseAdManager{
+
+}
+
+
+
+# Unity Ads
+-keep class com.unity3d.ads.** { *; }
+-keep class com.unity3d.services.ads.** { *; }
+-dontwarn com.unity3d.services.**
+-dontwarn com.unity3d.ads.**
+
+
+-keep public class gatewayprotocol.v1.** {
+    *;
+}
+
+-keep public class com.google.protobuf.** {
+    *;
+ }
+
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\0f7885483e47064ebe6fb5b5a461ca92\transformed\jetified-unity_lib_release_v5.0\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\3844f2daaaae40273ab64232f42f0af8\transformed\jetified-apm-1.9.8\proguard.txt
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+-keep class com.uc.crashsdk.** { *; }
+-keep interface com.uc.crashsdk.** { *; }
+
+-keep class com.efs.** { *; }
+-keep interface com.efs.** { *; }
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\3844f2daaaae40273ab64232f42f0af8\transformed\jetified-apm-1.9.8\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\93be7a0952e4dc8e13d606c93c7f34e2\transformed\rules\lib\META-INF\proguard\okhttp3.pro
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\93be7a0952e4dc8e13d606c93c7f34e2\transformed\rules\lib\META-INF\proguard\okhttp3.pro
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\0ed67687edadf2a45dbf53aef02c8922\transformed\jetified-gecko-1.0.0.3-rc.13\proguard.txt
+-keep class com.bykv.vk.openvk.preload.**{*;}
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\0ed67687edadf2a45dbf53aef02c8922\transformed\jetified-gecko-1.0.0.3-rc.13\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\351036fb23c1932ed88d07b99a8ae051\transformed\jetified-dycreator-16.6.51\proguard.txt
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.mbridge.** {*; }
+-keep interface com.mbridge.** {*; }
+-dontwarn com.mbridge.**
+-keepclassmembers class **.R$* { public static final int mbridge*; }
+
+-keep class com.mbridge.msdk.foundation.same.net.dns.MBDns{
+    *;
+}
+-keep public class com.mbridge.* extends androidx.** { *; }
+-keep public class androidx.viewpager.widget.PagerAdapter{
+*;
+}
+-keep public class androidx.viewpager.widget.ViewPager.OnPageChangeListener{
+*;
+}
+-keep interface androidx.annotation.IntDef{
+*;
+}
+-keep interface androidx.annotation.StringDef{
+*;
+}
+-keep interface androidx.annotation.Nullable{
+*;
+}
+-keep interface androidx.annotation.CheckResult{
+*;
+}
+-keep interface androidx.annotation.NonNull{
+*;
+}
+-keep public class androidx.fragment.app.Fragment{
+*;
+}
+-keep public class androidx.core.content.FileProvider{
+                                                     *;
+                                                     }
+-keep public class androidx.core.app.NotificationCompat{
+                                                       *;
+                                                       }
+-keep public class androidx.appcompat.widget.AppCompatImageView {
+                                                                *;
+                                                                }
+-keep public class androidx.recyclerview.*{
+                                          *;
+                                          }
+-keep class com.mbridge.msdk.foundation.tools.FastKV{
+    *;
+}
+
+-keep class com.mbridge.msdk.foundation.tools.FastKV$Builder{
+    *;
+}
+
+#
+-keep public class androidx.recyclerview.widget.RecyclerView{
+      *;
+      }
+
+-keep public class androidx.recyclerview.widget.DividerItemDecoration{
+     *;
+   }
+-keep public class androidx.recyclerview.widget.LinearLayoutManager{
+        *;
+      }
+-keep public class androidx.recyclerview.widget.GridLayoutManager{
+        *;
+}
+-keep public class androidx.recyclerview.widget.OrientationHelper{
+        *;
+}
+-keep public class androidx.recyclerview.widget.StaggeredGridLayoutManager{
+        *;
+}
+-keep public class androidx.fragment.app.Fragment{
+        *;
+}
+
+-keep public class androidx.fragment.app.FragmentActivity{
+        *;
+}
+
+-keep public class androidx.fragment.app.FragmentManager{
+        *;
+}
+-keep public class androidx.fragment.app.FragmentTransaction{
+        *;
+}
+-keep public class androidx.fragment.app.FragmentStatePagerAdapter{
+        *;
+}
+-keep public class androidx.viewpager.widget.ViewPager{
+        *;
+}
+-keep public class androidx.viewpager.widget.PagerAdapter{
+        *;
+}
+-keep interface androidx.viewpager.widget.ViewPager.OnPageChangeListener{
+        *;
+}
+-keep public class androidx.core.view.MotionEventCompat{
+        *;
+}
+-keep public class androidx.core.view.ViewConfigurationCompat{
+        *;
+}
+-keep public class androidx.core.view.ViewCompat{
+        *;
+}
+-keep interface androidx.annotation.Nullable{
+        *;
+}
+-keep interface androidx.annotation.RequiresApi{
+        *;
+}
+-keep interface androidx.annotation.NonNull{
+        *;
+}
+-keep interface androidx.annotation.IntDef{
+        *;
+}
+-keep interface androidx.annotation.StringDef{
+        *;
+}
+-keep interface androidx.annotation.RequiresPermission{
+        *;
+}
+-keep interface androidx.annotation.CheckResult{
+        *;
+}
+-keep interface androidx.annotation.StringRes{
+        *;
+}
+-keep interface androidx.annotation.CallSuper{
+        *;
+}
+-keep public class androidx.core.app.NotificationManagerCompat{
+        *;
+}
+-keep public class androidx.core.app.NotificationCompat{
+        *;
+}
+-keep public class androidx.core.content.FileProvider{
+        *;
+}
+-keep public class androidx.appcompat.widget.AppCompatButton{
+        *;
+}
+-keep public class androidx.appcompat.widget.AppCompatImageView{
+        *;
+}
+-keep public class androidx.appcompat.widget.AppCompatTextView{
+        *;
+}
+
+-keep class com.mbridge.msdk.scheme.**{
+    *;
+}
+
+-keep class com.mbridge.msdk.foundation.same.DomainNameUtils{
+    *;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\351036fb23c1932ed88d07b99a8ae051\transformed\jetified-dycreator-16.6.51\proguard.txt
+# The proguard configuration file for the following section is C:\Users\admin\.gradle\caches\transforms-3\ebbfe068eeef5b411b24853e9a034bfc\transformed\jetified-same-16.6.51\proguard.txt
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.mbridge.** {*; }
+-keep interface com.mbridge.** {*; }
+-dontwarn com.mbridge.**
+-keepclassmembers class **.R$* { public static final int mbridge*; }
+
+-keep class com.mbridge.msdk.foundation.same.net.dns.MBDns{
+    *;
+}
+-keep public class com.mbridge.* extends androidx.** { *; }
+-keep public class androidx.viewpager.widget.PagerAdapter{
+*;
+}
+-keep public class androidx.viewpager.widget.ViewPager.OnPageChangeListener{
+*;
+}
+-keep interface androidx.annotation.IntDef{
+*;
+}
+-keep interface androidx.annotation.StringDef{
+*;
+}
+-keep interface androidx.annotation.Nullable{
+*;
+}
+-keep interface androidx.annotation.CheckResult{
+*;
+}
+-keep interface androidx.annotation.NonNull{
+*;
+}
+-keep public class androidx.fragment.app.Fragment{
+*;
+}
+-keep public class androidx.core.content.FileProvider{
+                                                     *;
+                                                     }
+-keep public class androidx.core.app.NotificationCompat{
+                                                       *;
+                                                       }
+-keep public class androidx.appcompat.widget.AppCompatImageView {
+                                                                *;
+                                                                }
+-keep public class androidx.recyclerview.*{
+                                          *;
+                                          }
+-keep class com.mbridge.msdk.foundation.tools.FastKV{
+    *;
+}
+
+-keep class com.mbridge.msdk.foundation.tools.FastKV$Builder{
+    *;
+}
+
+#
+-keep public class android.support.v7.widget.RecyclerView{
+      *;
+      }
+
+-keep public class android.support.v7.widget.DividerItemDecoration{
+     *;
+   }
+-keep public class android.support.v7.widget.LinearLayoutManager{
+        *;
+      }
+-keep public class android.support.v7.widget.GridLayoutManager{
+        *;
+}
+-keep public class android.support.v7.widget.OrientationHelper{
+        *;
+}
+-keep public class android.support.v7.widget.StaggeredGridLayoutManager{
+        *;
+}
+-keep public class android.support.v4.app.Fragment{
+        *;
+}
+
+-keep public class android.support.v4.app.FragmentActivity{
+        *;
+}
+
+-keep public class android.support.v4.app.FragmentManager{
+        *;
+}
+-keep public class android.support.v4.app.FragmentTransaction{
+        *;
+}
+-keep public class android.support.v4.app.FragmentStatePagerAdapter{
+        *;
+}
+-keep public class android.support.v4.view.ViewPager{
+        *;
+}
+-keep public class android.support.v4.view.PagerAdapter{
+        *;
+}
+-keep interface android.support.v4.view.ViewPager.OnPageChangeListener{
+        *;
+}
+-keep public class android.support.v4.view.MotionEventCompat{
+        *;
+}
+-keep public class android.support.v4.view.ViewConfigurationCompat{
+        *;
+}
+-keep public class android.support.v4.view.ViewCompat{
+        *;
+}
+-keep interface android.support.annotation.Nullable{
+        *;
+}
+-keep interface android.support.annotation.RequiresApi{
+        *;
+}
+-keep interface android.support.annotation.NonNull{
+        *;
+}
+-keep interface android.support.annotation.IntDef{
+        *;
+}
+-keep interface android.support.annotation.StringDef{
+        *;
+}
+-keep interface android.support.annotation.RequiresPermission{
+        *;
+}
+-keep interface android.support.annotation.CheckResult{
+        *;
+}
+-keep interface android.support.annotation.StringRes{
+        *;
+}
+-keep interface android.support.annotation.CallSuper{
+        *;
+}
+-keep public class android.support.v4.app.NotificationManagerCompat{
+        *;
+}
+-keep public class android.support.v4.app.NotificationCompat{
+        *;
+}
+-keep public class android.support.v4.content.FileProvider{
+        *;
+}
+-keep public class android.support.v7.widget.AppCompatButton{
+        *;
+}
+-keep public class android.support.v7.widget.AppCompatImageView{
+        *;
+}
+-keep public class android.support.v7.widget.AppCompatTextView{
+        *;
+}
+
+-keep class com.mbridge.msdk.scheme.**{
+    *;
+}
+
+-keep class com.mbridge.msdk.foundation.same.DomainNameUtils{
+    *;
+}
+
+# End of content from C:\Users\admin\.gradle\caches\transforms-3\ebbfe068eeef5b411b24853e9a034bfc\transformed\jetified-same-16.6.51\proguard.txt
+# The proguard configuration file for the following section is <unknown>
+-ignorewarnings
+# End of content from <unknown>
